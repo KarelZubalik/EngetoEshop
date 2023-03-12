@@ -1,0 +1,17 @@
+CREATE TABLE "engetoproductslist" (
+  "id" int NOT NULL AUTO_INCREMENT,
+  "partNo" int NOT NULL,
+  "name" varchar(45) NOT NULL,
+  "description" varchar(255) DEFAULT NULL,
+  "isForSale" tinyint NOT NULL,
+  "price" double NOT NULL,
+  PRIMARY KEY ("id"),
+  UNIQUE KEY "partNo_UNIQUE" ("partNo")
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE "todoitem" (
+  "id" bigint NOT NULL AUTO_INCREMENT,
+  "text" varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  "isCompleted" tinyint NOT NULL,
+  PRIMARY KEY ("id")
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_czech_ci
