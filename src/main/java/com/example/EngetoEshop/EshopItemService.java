@@ -45,10 +45,14 @@ public class EshopItemService {
         Statement statement = connection.createStatement();
 
         statement.executeUpdate(
-                "INSERT INTO engetoproductslist(partNo, name, description, isForSale, price) VALUES (" + newItem.getPartNo() +", '" + newItem.getName() +"', " + newItem.getForSale() +", "+ newItem.getPrice() +")",
+                "INSERT INTO engetoproductslist(partNo, name, description, isForSale, price) VALUES (" + newItem.getPartNo() +", '" + newItem.getName() +"', '"+ newItem.getDescription() +"'," + newItem.getForSale() +", "+ newItem.getPrice() +")",
                 Statement.RETURN_GENERATED_KEYS);
-
-        return statement.getGeneratedKeys().getLong("id");
+        ResultSet set =statement.getGeneratedKeys();
+        if (set.next()) {
+            return set.getLong(1);
+        }else {
+            return null;
+        }
     }
 
     public void deleteItem(Long itemId) throws SQLException {
@@ -61,6 +65,10 @@ public class EshopItemService {
         Statement statement = connection.createStatement();
 
         statement.executeUpdate("UPDATE engetoproductslist SET isCompleted = true WHERE id = " + itemId);
+    }
+    public void setItemPrice(Long itemId,Double price) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("UPDATE engetoproductslist SET price = "+price+" WHERE id = " + itemId);
     }
 
     public EshopItem getItem(Long itemId) throws SQLException {

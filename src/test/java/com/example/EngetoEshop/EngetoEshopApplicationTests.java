@@ -11,7 +11,7 @@ class EngetoEshopApplicationTests {
 
 	@Test
 	void contextLoads() throws SQLException {
-		int partNo=1548797;
+		int partNo=1568797;
 		String name="vařečka";
 		String description="vařečka do kuchyně TOP";
 		boolean isForSale=true;
@@ -21,7 +21,14 @@ class EngetoEshopApplicationTests {
 		System.out.println(eshopItem);
 		eshopItem.setId(eshopItemService.saveNewItem(eshopItem));
 		EshopItem eshopItemFromDb=eshopItemService.getItem(eshopItem.getId());
-		Assert.isTrue(eshopItem.equals(eshopItemFromDb),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+		System.out.println("before\n"+eshopItem);
+		System.out.println("after\n"+eshopItemFromDb);
+		eshopItemService.deleteItem(eshopItem.getId());
+		Assert.isTrue(eshopItem.getId().equals(eshopItemFromDb.getId()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+		Assert.isTrue(eshopItem.getPartNo()==(eshopItemFromDb.getPartNo()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+		Assert.isTrue(eshopItem.getName().equals(eshopItemFromDb.getName()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+		Assert.isTrue(eshopItem.getDescription().equals(eshopItemFromDb.getDescription()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+		Assert.isTrue(eshopItem.getForSale().equals(eshopItemFromDb.getForSale()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+		Assert.isTrue(eshopItem.getPrice()==(eshopItemFromDb.getPrice()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
 	}
-
 }
