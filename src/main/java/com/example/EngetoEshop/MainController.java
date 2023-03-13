@@ -9,21 +9,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-
+@CrossOrigin
+@RestController
 public class MainController {
 
-    private boolean ifIdExistValidation(Long id){
+    private void ifIdExistValidation(Long id) throws IdException, SQLException {
         List<EshopItem> collection = (List<EshopItem>) getAllItems();
+        if (collection.isEmpty()) {
+            throw new IdException(id);
+        }
         for (int i = 0; i < collection.size(); i++) {
             if (Objects.equals(collection.get(i).getId(), id)){
-                    return true;
+                    break;
             } else {
-                if ((collection.size()-1)==i) {
-                    handleError(new Exception("Produkt s id="+id+" nebyl nalezen."));
+                    if ((collection.size() - 1) == i) {
+                        throw new IdException(id);
                 }
             }
         }
-        return false;
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -31,97 +34,44 @@ public class MainController {
         return new ErrorResponse(e.getMessage(), LocalDateTime.now());
     }
 
-
-    @GetMapping("/error")
-    public EshopItem testError(@RequestParam(value = "hodnota", required = false) String hodnota) throws Exception {
-        throw new Exception("Chyba "+hodnota);
-    }
-
-
     @GetMapping("/eshop")
-    public Collection<EshopItem> getAllItems(){
-        try {
+    public Collection<EshopItem> getAllItems() throws SQLException {
             EshopItemService eshopItemService = new EshopItemService();
             return eshopItemService.getAllEshopItems();
-        } catch (SQLException e) {
-            handleError(e);
-            return null;
-        }
     }
 
     @GetMapping("/eshop/{id}")
-    public EshopItem getItemById(@PathVariable("id") Long id) {
-        /*List<EshopItem> collection = (List<EshopItem>) getAllItems();
-        for (int i = 0; i < collection.size(); i++) {
-            if (Objects.equals(collection.get(i).getId(), id)){
-                try {
-                    EshopItemService eshopItemService = new EshopItemService();
-                    return eshopItemService.getItem(id);
-                } catch (SQLException e) {
-                    handleError(e);
-                }
-            } else {
-                if ((collection.size()-1)==i) {
-                    handleError(new Exception("Nenalezl jsem žádný produkt s tímto ID"));
-                    return null;
-                }
-            }
-        }
-         */
-        if (ifIdExistValidation(id)) {
-            try {
-                EshopItemService eshopItemService = new EshopItemService();
-                return eshopItemService.getItem(id);
-            } catch (SQLException e) {
-                handleError(e);
-            }
-        }
-        return null;
+    public EshopItem getItemById(@PathVariable("id") Long id) throws Exception {
+        ifIdExistValidation(id);
+        EshopItemService eshopItemService = new EshopItemService();
+        return eshopItemService.getItem(id);
     }
 
     @PostMapping("/eshop")
-    public EshopItem postItem(@RequestBody EshopItem eshopItem){
-        //Nova hodnota ze sekvence
-        try{
+    public EshopItem postItem(@RequestBody EshopItem eshopItem) throws SQLException {
             EshopItemService eshopItemService = new EshopItemService();
             eshopItem.setId(eshopItemService.saveNewItem(eshopItem));
             return eshopItemService.getItem(eshopItem.getId());
-        } catch (SQLException e) {
-            handleError(e);
-            return null;
-        }
-//        seq++;
-//        Long id = seq;
-
-        //Nastaveni ID pro dalsi pouziti
-//        eshopItem.setId(id);
-//        eshopItemsMap.put(id, eshopItem);
     }
 
     @PutMapping("/eshop/{id}")
-    public EshopItem updatePrice(@PathVariable("id") Long id, @RequestBody EshopItem eshopItem){
-        if (ifIdExistValidation(id)) {
-            System.out.println(eshopItem);
-            try {
-                EshopItemService eshopItemService = new EshopItemService();
-                eshopItemService.setItemPrice(id,eshopItem.getPrice());
-                return eshopItemService.getItem(id);
-            } catch (SQLException e) {
-                handleError(e);
-            }
-        }
-        return null;
+    public EshopItem updatePrice(@PathVariable("id") Long id, @RequestBody EshopItem eshopItem) throws Exception {
+        ifIdExistValidation(id);
+        EshopItemService eshopItemService = new EshopItemService();
+        eshopItemService.setItemPrice(id,eshopItem.getPrice());
+        return eshopItemService.getItem(id);
     }
 
     @DeleteMapping("/eshop/{id}")
-    public void deleteItem(@PathVariable("id") Long id){
-        if (ifIdExistValidation(id)) {
-            try {
-                EshopItemService eshopItemService = new EshopItemService();
-                eshopItemService.deleteItem(id);
-            } catch (SQLException e) {
-                handleError(e);
-            }
+    public String deleteItem(@PathVariable("id") Long id) throws Exception {
+        ifIdExistValidation(id);
+        EshopItemService eshopItemService = new EshopItemService();
+        eshopItemService.deleteItem(id);
+        try{
+            ifIdExistValidation(id);
+            throw new Exception("Produkt nebyl smazán, kontaktujte prosím správce aplikace s tímto textem a časem.");
+        } catch (IdException e) {
+            return "Item s id:"+id+" byl smazán.";
         }
     }
 }

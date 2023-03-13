@@ -43,9 +43,8 @@ public class EshopItemService {
 
     public Long saveNewItem(EshopItem newItem) throws SQLException {
         Statement statement = connection.createStatement();
-
         statement.executeUpdate(
-                "INSERT INTO engetoproductslist(partNo, name, description, isForSale, price) VALUES (" + newItem.getPartNo() +", '" + newItem.getName() +"', '"+ newItem.getDescription() +"'," + newItem.getForSale() +", "+ newItem.getPrice() +")",
+                "INSERT INTO engetoproductslist(partNo, name, description, isForSale, price) VALUES (" + newItem.getPartNo() +", '" + newItem.getName() +"', '"+ newItem.getDescription() +"'," + newItem.getIsForSale() +", "+ newItem.getPrice() +")",
                 Statement.RETURN_GENERATED_KEYS);
         ResultSet set =statement.getGeneratedKeys();
         if (set.next()) {

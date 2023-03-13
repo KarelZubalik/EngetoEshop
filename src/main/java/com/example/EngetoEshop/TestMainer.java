@@ -23,7 +23,7 @@ public class TestMainer {
         Assert.isTrue(eshopItem.getPartNo()==(eshopItemFromDb.getPartNo()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
         Assert.isTrue(eshopItem.getName().equals(eshopItemFromDb.getName()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
         Assert.isTrue(eshopItem.getDescription().equals(eshopItemFromDb.getDescription()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
-        Assert.isTrue(eshopItem.getForSale().equals(eshopItemFromDb.getForSale()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
+        Assert.isTrue(eshopItem.getIsForSale().equals(eshopItemFromDb.getIsForSale()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
         Assert.isTrue(eshopItem.getPrice()==(eshopItemFromDb.getPrice()),"Transformace z Db jej změnila, prosím zkontrolujte, jestli máte vše správně.");
     }
 }

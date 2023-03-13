@@ -2,13 +2,16 @@ package com.example.EngetoEshop;
 
 public class EshopItem {
     private Long id;
-    private int partNo;
+    private Integer partNo;
     private String name;
     private String description;
     private Boolean isForSale;
-    private double price;
+    private Double price;
 
-    public EshopItem(int partNo, String name, String description, Boolean isForSale, double price) {
+    public EshopItem() {
+    }
+
+    public EshopItem(Integer partNo, String name, String description, Boolean isForSale, Double price) {
         this.partNo = partNo;
         this.name = name;
         this.description = description;
@@ -16,7 +19,7 @@ public class EshopItem {
         this.price = price;
     }
 
-    public EshopItem(Long id, int partNo, String name, String description, Boolean isForSale, double price) {
+    public EshopItem(Long id, Integer partNo, String name, String description, Boolean isForSale, Double price) {
         this.id = id;
         this.partNo = partNo;
         this.name = name;
@@ -33,11 +36,11 @@ public class EshopItem {
         this.id = id;
     }
 
-    public int getPartNo() {
+    public Integer getPartNo() {
         return partNo;
     }
 
-    public void setPartNo(int partNo) {
+    public void setPartNo(Integer partNo) {
         this.partNo = partNo;
     }
 
@@ -57,7 +60,7 @@ public class EshopItem {
         this.description = description;
     }
 
-    public Boolean getForSale() {
+    public Boolean getIsForSale() {
         return isForSale;
     }
 
@@ -65,11 +68,11 @@ public class EshopItem {
         isForSale = forSale;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
