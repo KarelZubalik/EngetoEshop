@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TODO Client</title>
+    <title>Eshop Zobrazení produktů.</title>
 </head>
 <body>
 
@@ -22,17 +22,18 @@
 
                 result.forEach((e) => {
                     newItem = document.createElement("div");
-                    newItem.innerText = (e?.done? "Y - " : "N - ") + e?.item;
-                    if (!e?.done) {
-                        markAsDoneButton = document.createElement("button");
-                        markAsDoneButton.innerText = "Mark as done";
-                        markAsDoneButton.setAttribute('onclick', 'javascript : setItemAsDone(' + e?.id + ');')
-                        newItem.appendChild(markAsDoneButton);
-                    }
+                    newItem.innerText = (e?.isForSale? "Ano" : "Ne") + "\n"+e?.id + "\n"+ e?.partNo + "\n"+ e?.name + "\n"+ e?.description + "\n"+ e?.price;
+                    changePriceInput = document.createElement("input");
+                    changePriceInput.setAttribute('id', 'priceToChange');
+                    changePriceButton = document.createElement("button");
+                    changePriceButton.innerText = "Změn cenu";
+                    changePriceButton.setAttribute('onclick', 'javascript : setItemNewPrice(' + e?.id + ');');
                     deleteButton = document.createElement("button");
                     deleteButton.innerText = "Delete";
                     deleteButton.setAttribute('onclick', 'javascript : deleteItem(' + e?.id + ');');
                     newItem.appendChild(deleteButton);
+                    newItem.appendChild(changePriceInput);
+                    newItem.appendChild(changePriceButton);
                     document.getElementById("todoList").appendChild(newItem);
                 })
 
@@ -49,8 +50,11 @@
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
-            "item": document.getElementById("item").value,
-            "done": document.getElementById("done").checked
+            "partNo": document.getElementById("itemPartNo").value,
+            "name": document.getElementById("itemName").value,
+            "description": document.getElementById("itemDescription").value,
+            "price": document.getElementById("itemPrice").value,
+            "isForSale": document.getElementById("done").checked
         });
 
         var requestOptions = {
@@ -60,7 +64,7 @@
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8080/todo", requestOptions)
+        fetch("http://localhost:8080/eshop", requestOptions)
             .then(response => response.text())
             .then(result => {console.log(result); load();})
             .catch(error => console.log('error', error));
@@ -72,30 +76,41 @@
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8080/todo/"+id, requestOptions)
+        fetch("http://localhost:8080/eshop/"+id, requestOptions)
             .then(response => response.text())
             .then(result => {console.log(result); load();})
             .catch(error => console.log('error', error));
     }
 
-    function setItemAsDone(id) {
+    function setItemNewPrice(id) {
+    var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+            "price": document.getElementById("priceToChange").value,
+        });
         var requestOptions = {
             method: 'PUT',
+            headers: myHeaders,
+            body: raw,
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8080/todo/"+id, requestOptions)
+        fetch("http://localhost:8080/eshop/"+id, requestOptions)
             .then(response => response.text())
             .then(result => {console.log(result); load();})
             .catch(error => console.log('error', error));
     }
 </script>
 
-<h1>TODO List</h1>
+<h1>Eshop Zobrazení produktů.</h1>
 <div id="todoList"></div>
 
 <div>
-    <input id="item" type="text">
+    <input id="itemPartNo" type="text">
+    <input id="itemName" type="text">
+    <input id="itemDescription" type="text">
+    <input id="itemPrice" type="text">
     <input id="done" type="checkbox">
     <button id="add-button" onclick="addValue()">ADD</button>
 

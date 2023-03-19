@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TODO Item detail</title>
+    <title>EshopItem Detail</title>
 </head>
 
 <script>
@@ -16,14 +16,18 @@
 
         var id = document.getElementById("id").value;
 
-        fetch("http://localhost:8080/todo/"+id, requestOptions)
+        fetch("http://localhost:8080/eshop/"+id, requestOptions)
             .then(response => response.json())
             .then(result => {
                 console.log(result);
-                console.log("result.item: " + result.item);
-                console.log("result.done: " + result.done);
-                document.getElementById("text").value = result.item;
-                document.getElementById("done").checked = result.done;
+                console.log("result.id: " + result.id);
+                console.log("result.partNo: " + result.partNo);
+                console.log("result.name: " + result.name);
+                console.log("result.description: " + result.description);
+                console.log("result.isForSale: " + result.isForSale);
+                console.log("result.price: " + result.price);
+                document.getElementById("text").value = "ID:"+result.id+"\n"+"Název produktu:"+result.name+"\n"+"Popis produktu:"+result.description+"\n"+"Číslo produktu:"+result.partNo+"\n"+"Cena produktu:"+result.price;
+                document.getElementById("done").checked = result.isForSale;
 
             })
             .catch(error => console.log('error', error));
@@ -38,10 +42,10 @@
         <textarea id="text" cols="40" rows="4">
         </textarea>
         <input id="done" type="checkbox">
-        <label for="done">Is Completed</label>
+        <label for="done">Je na prodej?</label>
         <br>
         <input id="id" type="text">
-        <button id="load-button" onclick="loadItem()">Load TODO Item</button>
+        <button id="load-button" onclick="loadItem()">Načti produkt z DB dle ID</button>
     </div>
 </body>
 </html>
