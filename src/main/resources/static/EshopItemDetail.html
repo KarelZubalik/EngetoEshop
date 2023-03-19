@@ -3,38 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>EshopItem Detail</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<script>
-
-    function loadItem() {
-
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        var id = document.getElementById("id").value;
-
-        fetch("http://localhost:8080/eshop/"+id, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-                console.log("result.id: " + result.id);
-                console.log("result.partNo: " + result.partNo);
-                console.log("result.name: " + result.name);
-                console.log("result.description: " + result.description);
-                console.log("result.isForSale: " + result.isForSale);
-                console.log("result.price: " + result.price);
-                document.getElementById("text").value = "ID:"+result.id+"\n"+"Název produktu:"+result.name+"\n"+"Popis produktu:"+result.description+"\n"+"Číslo produktu:"+result.partNo+"\n"+"Cena produktu:"+result.price;
-                document.getElementById("done").checked = result.isForSale;
-
-            })
-            .catch(error => console.log('error', error));
-
-    }
-
-</script>
 
 <body>
     <div>

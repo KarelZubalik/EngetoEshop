@@ -3,118 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Eshop Zobrazení produktů.</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<script>
-    function load() {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/eshop", requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-
-                document.getElementById("todoList").innerHTML = "";
-
-                result.forEach((e) => {
-                    newItem = document.createElement("div");
-                    newItem.innerText = (e?.isForSale? "Ano" : "Ne") + "\n"+e?.id + "\n"+ e?.partNo + "\n"+ e?.name + "\n"+ e?.description + "\n"+ e?.price;
-                    changePriceInput = document.createElement("input");
-                    changePriceInput.setAttribute('id', 'priceToChange');
-                    changePriceButton = document.createElement("button");
-                    changePriceButton.innerText = "Změn cenu";
-                    changePriceButton.setAttribute('onclick', 'javascript : setItemNewPrice(' + e?.id + ');');
-                    deleteButton = document.createElement("button");
-                    deleteButton.innerText = "Delete";
-                    deleteButton.setAttribute('onclick', 'javascript : deleteItem(' + e?.id + ');');
-                    newItem.appendChild(deleteButton);
-                    newItem.appendChild(changePriceInput);
-                    newItem.appendChild(changePriceButton);
-                    document.getElementById("todoList").appendChild(newItem);
-                })
-
-
-
-
-            })
-            .catch(error => console.log('error', error));
-    }
-    load();
-
-    function addValue(){
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-            "partNo": document.getElementById("itemPartNo").value,
-            "name": document.getElementById("itemName").value,
-            "description": document.getElementById("itemDescription").value,
-            "price": document.getElementById("itemPrice").value,
-            "isForSale": document.getElementById("done").checked
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/eshop", requestOptions)
-            .then(response => response.text())
-            .then(result => {console.log(result); load();})
-            .catch(error => console.log('error', error));
-    }
-
-    function deleteItem(id) {
-        var requestOptions = {
-            method: 'DELETE',
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/eshop/"+id, requestOptions)
-            .then(response => response.text())
-            .then(result => {console.log(result); load();})
-            .catch(error => console.log('error', error));
-    }
-
-    function setItemNewPrice(id) {
-    var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify({
-            "price": document.getElementById("priceToChange").value,
-        });
-        var requestOptions = {
-            method: 'PUT',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/eshop/"+id, requestOptions)
-            .then(response => response.text())
-            .then(result => {console.log(result); load();})
-            .catch(error => console.log('error', error));
-    }
-</script>
-
+<section id="header">
 <h1>Eshop Zobrazení produktů.</h1>
-<div id="todoList"></div>
+</section>
 
-<div>
-    <input id="itemPartNo" type="text">
-    <input id="itemName" type="text">
-    <input id="itemDescription" type="text">
-    <input id="itemPrice" type="text">
-    <input id="done" type="checkbox">
-    <button id="add-button" onclick="addValue()">ADD</button>
+<section id="showProducts" class="section-p1">
+    <h2>Zobrazení produktů</h2>
+    <p>Letni koleckce</p>
+    <div id="products1" class="pro-container">
 
-</div>
+    </div>
+<!--<div id="todoList"></div>-->
+
+</section>
+
+<section id="addProducts" class="section-p1">
+    <h2>Tvoření produktu</h2>
+    <div>
+        <label id="itemPartLabel">Číslo produktu</label>
+        <input id="itemPartNo" type="text">
+    </div>
+    <div>
+        <label id="itemNameLabel">Název produktu</label>
+        <input id="itemName" type="text">
+    </div>
+    <div>
+        <label id="itemDescriptionLabel">Popis produktu</label>
+        <input id="itemDescription" type="text">
+    </div>
+    <div>
+        <label id="itemPriceLabel">Cena produktu</label>
+        <input id="itemPrice" type="text">
+    </div>
+    <div>
+        <label id="itemIsForSellLabel">Je v prodeji?</label>
+        <input id="done" type="checkbox">
+    </div>
+        <button id="add-button" onclick="addValue()">Přidej produkt</button>
+</section>
 
 </body>
 </html>
