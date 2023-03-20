@@ -3,6 +3,8 @@ package com.example.EngetoEshop;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -48,9 +50,13 @@ public class MainController {
     }
 
     @PostMapping("/eshop")
-    public EshopItem postItem(@RequestBody EshopItem eshopItem) throws SQLException {
+    public EshopItem postItem(@RequestBody EshopItem eshopItem) throws SQLException, IOException {
             EshopItemService eshopItemService = new EshopItemService();
             eshopItem.setId(eshopItemService.saveNewItem(eshopItem));
+            System.out.println(eshopItem.getFileInBase64().getAbsolutePath());
+            File file = new File(eshopItem.getFileInBase64().getAbsolutePath());
+        System.out.println(file.getAbsolutePath());
+        file.createNewFile();
             return eshopItemService.getItem(eshopItem.getId());
     }
 

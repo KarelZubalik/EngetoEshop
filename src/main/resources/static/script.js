@@ -90,6 +90,11 @@ function loadItem() {
         load();
 
         function addValue(){
+        var file = document.getElementById("filez").files[0];
+        getBase64(file).then(
+          data => console.log(data)
+        );
+        var doprdkynacpat= console.get(data);
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
@@ -98,7 +103,8 @@ function loadItem() {
                 "name": document.getElementById("itemName").value,
                 "description": document.getElementById("itemDescription").value,
                 "price": document.getElementById("itemPrice").value,
-                "isForSale": document.getElementById("done").checked
+                "isForSale": document.getElementById("done").checked,
+                "fileInBase64": doprdkynacpat
             });
 
             var requestOptions = {
@@ -145,3 +151,12 @@ function loadItem() {
                 .then(result => {console.log(result); load();})
                 .catch(error => console.log('error', error));
         }
+
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
