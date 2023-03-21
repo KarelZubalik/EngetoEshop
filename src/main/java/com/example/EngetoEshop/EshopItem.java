@@ -1,6 +1,5 @@
 package com.example.EngetoEshop;
 
-import java.io.File;
 
 public class EshopItem {
     private Long id;
@@ -10,7 +9,7 @@ public class EshopItem {
     private Boolean isForSale;
     private Double price;
 
-    private File fileInBase64;
+    private String fileInBase64;
 
     public EshopItem() {
     }
@@ -32,7 +31,7 @@ public class EshopItem {
         this.price = price;
     }
 
-    public EshopItem(Long id, Integer partNo, String name, String description, Boolean isForSale, Double price, File fileInBase64) {
+    public EshopItem(Long id, Integer partNo, String name, String description, Boolean isForSale, Double price, String fileInBase64) {
         this.id = id;
         this.partNo = partNo;
         this.name = name;
@@ -42,11 +41,11 @@ public class EshopItem {
         this.fileInBase64 = fileInBase64;
     }
 
-    public File getFileInBase64() {
+    public String getFileInBase64() {
         return fileInBase64;
     }
 
-    public void setFileInBase64(File fileInBase64) {
+    public void setFileInBase64(String fileInBase64) {
         this.fileInBase64 = fileInBase64;
     }
 

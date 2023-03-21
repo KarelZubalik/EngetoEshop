@@ -3,7 +3,6 @@ package com.example.EngetoEshop;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -53,10 +52,6 @@ public class MainController {
     public EshopItem postItem(@RequestBody EshopItem eshopItem) throws SQLException, IOException {
             EshopItemService eshopItemService = new EshopItemService();
             eshopItem.setId(eshopItemService.saveNewItem(eshopItem));
-            System.out.println(eshopItem.getFileInBase64().getAbsolutePath());
-            File file = new File(eshopItem.getFileInBase64().getAbsolutePath());
-        System.out.println(file.getAbsolutePath());
-        file.createNewFile();
             return eshopItemService.getItem(eshopItem.getId());
     }
 
@@ -80,4 +75,9 @@ public class MainController {
             return "Item s id:"+id+" byl smazán.";
         }
     }
+    @DeleteMapping("/eshop/deleteAllNotSaleItems")
+    public String deleteAllNotSaleItems() throws Exception {
+        EshopItemService eshopItemService = new EshopItemService();
+        return "Ids of deleted items: "+eshopItemService.deleteAllNotSaleItems();
+        }
 }

@@ -7,6 +7,13 @@ import java.util.List;
 public class EshopItemService {
     Connection connection;
 
+    private EshopItem photoValidator(EshopItem eshopItem){
+        if (eshopItem.getFileInBase64().equals("null")){
+            eshopItem.setFileInBase64("noPhotoImg.jpg");
+        }
+        return eshopItem;
+    }
+
     public EshopItemService() throws SQLException {
         connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/eshopengeto",
@@ -23,9 +30,8 @@ public class EshopItemService {
         List<EshopItem> resultList = new ArrayList<>();
 
         while (resultSet.next()) {
-            EshopItem EshopItem = extractEshopItemData(resultSet);
-
-            resultList.add(EshopItem);
+            EshopItem eshopItem = extractEshopItemData(resultSet);
+            resultList.add(photoValidator(eshopItem));
         }
 
         return resultList;
@@ -38,13 +44,14 @@ public class EshopItemService {
                 resultSet.getString("name"),
                 resultSet.getString("description"),
                 resultSet.getBoolean("isForSale"),
-                resultSet.getDouble("price"));
+                resultSet.getDouble("price"),
+                resultSet.getString("image"));
     }
 
     public Long saveNewItem(EshopItem newItem) throws SQLException {
         Statement statement = connection.createStatement();
         statement.executeUpdate(
-                "INSERT INTO engetoproductslist(partNo, name, description, isForSale, price) VALUES (" + newItem.getPartNo() +", '" + newItem.getName() +"', '"+ newItem.getDescription() +"'," + newItem.getIsForSale() +", "+ newItem.getPrice() +")",
+                "INSERT INTO engetoproductslist(partNo, name, description, isForSale, price, image) VALUES (" + newItem.getPartNo() +", '" + newItem.getName() +"', '"+ newItem.getDescription() +"'," + newItem.getIsForSale() +", "+ newItem.getPrice() +", '"+ newItem.getFileInBase64()+"')",
                 Statement.RETURN_GENERATED_KEYS);
         ResultSet set =statement.getGeneratedKeys();
         if (set.next()) {
@@ -60,11 +67,6 @@ public class EshopItemService {
         statement.executeUpdate("DELETE FROM engetoproductslist WHERE id = " + itemId);
     }
 
-    public void setItemAsDone(Long itemId) throws SQLException {
-        Statement statement = connection.createStatement();
-
-        statement.executeUpdate("UPDATE engetoproductslist SET isCompleted = true WHERE id = " + itemId);
-    }
     public void setItemPrice(Long itemId,Double price) throws SQLException {
         Statement statement = connection.createStatement();
         statement.executeUpdate("UPDATE engetoproductslist SET price = "+price+" WHERE id = " + itemId);
@@ -76,10 +78,25 @@ public class EshopItemService {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM engetoproductslist WHERE id = " + itemId);
 
         if (resultSet.next()) {
-            return extractEshopItemData(resultSet);
+            return photoValidator(extractEshopItemData(resultSet));
         }
 
         return null;
+    }
+
+    public List<String> deleteAllNotSaleItems() throws SQLException {
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM engetoproductslist WHERE isForSale=false");
+
+        List<String> idsOfDeletedItems = new ArrayList<>();
+
+        while (resultSet.next()) {
+            EshopItem eshopItem = extractEshopItemData(resultSet);
+            idsOfDeletedItems.add(eshopItem.getId().toString());
+            deleteItem(eshopItem.getId());
+        }
+        return idsOfDeletedItems;
     }
 
 }

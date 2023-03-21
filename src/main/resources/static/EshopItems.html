@@ -45,12 +45,24 @@
     </div>
     <div>
         <label id="itemAddFileLabel">Přidejte fotku</label>
-        <input id="filez" type="file"/>
+<!--        <input id="filez" type="file"/>-->
+        <input class="formOne__input formOne__input---file" id="attachementName" type="file"/>
+<!--        <input type="file" id="pictureInput" />-->
+        <br>
+        <h1>Base64 encoded file</h1>
+        <textarea id="base64textarea" placeholder="Base64 will appear here" cols="50" rows="15"></textarea>
         <br/>
         <br/>
-        <button id="button">Evaluate</button>
     </div>
     <button id="add-button" onclick="addValue()">Přidej produkt</button>
+    <div>
+        <button id="deleteAllNotSaleItems" onclick="deleteAllNotSaleItems()">deleteAllNotSaleItems</button>
+    </div>
+    <div>
+        <label id="deleteSpecificItemLabel">Smažte item dle ID</label>
+        <input id="deleteSpecificItemInput" type="text">
+        <button id="button" onclick="deleteItemFromInput()">smazáni itemu</button>
+    </div>
 </section>
 
 </body>

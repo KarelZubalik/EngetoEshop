@@ -1,0 +1,13 @@
+CREATE DATABASE eshopengeto /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+CREATE TABLE `engetoproductslist` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `partNo` int NOT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_czech_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_czech_ci DEFAULT NULL,
+  `isForSale` tinyint NOT NULL,
+  `price` double NOT NULL,
+  `image` longblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `partNo_UNIQUE` (`partNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_czech_ci

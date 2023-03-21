@@ -43,7 +43,7 @@ function loadItem() {
                           newItem = document.createElement("div");
                           newItem.setAttribute('class', 'pro');
                           img = document.createElement("img");
-                          img.setAttribute('src', 'noPhotoImg.jpg');
+                          img.setAttribute('src', e?.fileInBase64);
                           img.setAttribute('alt', '');
                           newItem.appendChild(img);
                           description = document.createElement("div");
@@ -52,6 +52,9 @@ function loadItem() {
                           itemName = document.createElement("h3");
                           itemName.innerText = e?.name;
                           description.appendChild(itemName);
+                          idProduktu = document.createElement("span");
+                          idProduktu.innerText = "idProduktu:"+e?.id+"\n";
+                          description.appendChild(idProduktu);
                           itemPartNo = document.createElement("span");
                           itemPartNo.innerText = "partNo:"+e?.partNo+"\n";
                           description.appendChild(itemPartNo);
@@ -90,13 +93,16 @@ function loadItem() {
         load();
 
         function addValue(){
-        var file = document.getElementById("filez").files[0];
-        getBase64(file).then(
-          data => console.log(data)
-        );
-        var doprdkynacpat= console.get(data);
+        var file = document.getElementById("attachementName").files[0];
+
+//        getBase64(file).then(
+//          data =>  document.getElementById("base64textarea").value = data
+//        );
+//        var doprdkynacpat= console.get(data);
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
+//            const inputKey = fileInput.getAttribute('name')
+//            myFiles[inputKey] = "data:${file.type};base64,${document.getElementById("base64textarea").value}"
 
             var raw = JSON.stringify({
                 "partNo": document.getElementById("itemPartNo").value,
@@ -104,8 +110,10 @@ function loadItem() {
                 "description": document.getElementById("itemDescription").value,
                 "price": document.getElementById("itemPrice").value,
                 "isForSale": document.getElementById("done").checked,
-                "fileInBase64": doprdkynacpat
+                "fileInBase64": document.getElementById("base64textarea").value? document.getElementById("base64textarea").value : "null"
             });
+            document.getElementById("base64textarea").value ="";
+
 
             var requestOptions = {
                 method: 'POST',
@@ -120,13 +128,26 @@ function loadItem() {
                 .catch(error => console.log('error', error));
         }
 
-        function deleteItem(id) {
+        function deleteItemFromInput() {
+            var requestOptions = {
+                method: 'DELETE',
+                redirect: 'follow'
+            };
+            var id=document.getElementById("deleteSpecificItemInput").value;
+            console.log(id);
+
+            fetch("http://localhost:8080/eshop/"+id, requestOptions)
+                .then(response => response.text())
+                .then(result => {console.log(result); load();})
+                .catch(error => console.log('error', error));
+        }
+        function deleteAllNotSaleItems() {
             var requestOptions = {
                 method: 'DELETE',
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8080/eshop/"+id, requestOptions)
+            fetch("http://localhost:8080/eshop/deleteAllNotSaleItems", requestOptions)
                 .then(response => response.text())
                 .then(result => {console.log(result); load();})
                 .catch(error => console.log('error', error));
@@ -160,3 +181,33 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+var handleFileSelect = function(evt) {
+    alert("file selected");
+    var files = evt.target.files;
+    var file = files[0];
+    if (files && file) {
+        var reader = new FileReader();
+
+        reader.onload = function(readerEvt) {
+            var binaryString = readerEvt.target.result;
+            konvertierteDatei = btoa(binaryString);
+            document.getElementById("base64textarea").value = konvertierteDatei;
+            getBase64(file).then(
+                      data =>  document.getElementById("base64textarea").value = data
+                    );
+            console.log(konvertierteDatei);
+        };
+
+        reader.readAsBinaryString(file);
+    }
+};
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+       document.getElementById('attachementName').addEventListener('change', handleFileSelect, false);
+    } else {
+        alert('Die Datei APIs werden von diesem Browser nicht vollständig unterstützt.');
+    }
+});
