@@ -10,4 +10,4 @@ CREATE TABLE `engetoproductslist` (
   `image` longblob,
   PRIMARY KEY (`id`),
   UNIQUE KEY `partNo_UNIQUE` (`partNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_czech_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_czech_ci

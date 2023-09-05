@@ -1,5 +1,6 @@
 package com.example.EngetoEshop;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,8 @@ import java.util.Objects;
 @CrossOrigin
 @RestController
 public class MainController {
+    @Autowired
+    EshopItemService eshopItemService;
 
     private void ifIdExistValidation(Long id) throws IdException, SQLException {
         List<EshopItem> collection = (List<EshopItem>) getAllItems();
@@ -37,20 +40,17 @@ public class MainController {
 
     @GetMapping("/eshop")
     public Collection<EshopItem> getAllItems() throws SQLException {
-            EshopItemService eshopItemService = new EshopItemService();
             return eshopItemService.getAllEshopItems();
     }
 
     @GetMapping("/eshop/{id}")
     public EshopItem getItemById(@PathVariable("id") Long id) throws Exception {
         ifIdExistValidation(id);
-        EshopItemService eshopItemService = new EshopItemService();
         return eshopItemService.getItem(id);
     }
 
     @PostMapping("/eshop")
     public EshopItem postItem(@RequestBody EshopItem eshopItem) throws SQLException, IOException {
-            EshopItemService eshopItemService = new EshopItemService();
             eshopItem.setId(eshopItemService.saveNewItem(eshopItem));
             return eshopItemService.getItem(eshopItem.getId());
     }
@@ -58,7 +58,6 @@ public class MainController {
     @PutMapping("/eshop/{id}")
     public EshopItem updatePrice(@PathVariable("id") Long id, @RequestBody EshopItem eshopItem) throws Exception {
         ifIdExistValidation(id);
-        EshopItemService eshopItemService = new EshopItemService();
         eshopItemService.setItemPrice(id,eshopItem.getPrice());
         return eshopItemService.getItem(id);
     }
@@ -66,7 +65,6 @@ public class MainController {
     @DeleteMapping("/eshop/{id}")
     public String deleteItem(@PathVariable("id") Long id) throws Exception {
         ifIdExistValidation(id);
-        EshopItemService eshopItemService = new EshopItemService();
         eshopItemService.deleteItem(id);
         try{
             ifIdExistValidation(id);
@@ -77,7 +75,6 @@ public class MainController {
     }
     @DeleteMapping("/eshop/deleteAllNotSaleItems")
     public String deleteAllNotSaleItems() throws Exception {
-        EshopItemService eshopItemService = new EshopItemService();
         return "Ids of deleted items: "+eshopItemService.deleteAllNotSaleItems();
         }
 }

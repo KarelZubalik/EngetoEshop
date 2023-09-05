@@ -1,6 +1,7 @@
 package com.example.EngetoEshop;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
@@ -9,7 +10,8 @@ import java.util.Objects;
 
 @SpringBootTest
 class EngetoEshopApplicationTests {
-
+	@Autowired
+	EshopItemService eshopItemService;
 	@Test
 	void contextLoads() throws SQLException {
 		int partNo=1568797;
@@ -17,7 +19,6 @@ class EngetoEshopApplicationTests {
 		String description="vařečka do kuchyně TOP";
 		boolean isForSale=true;
 		double price=5788.788;
-		EshopItemService eshopItemService = new EshopItemService();
 		EshopItem eshopItem = new EshopItem(partNo,name,description,isForSale,price);
 		System.out.println(eshopItem);
 		eshopItem.setId(eshopItemService.saveNewItem(eshopItem));

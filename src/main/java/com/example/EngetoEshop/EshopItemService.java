@@ -1,9 +1,13 @@
 package com.example.EngetoEshop;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class EshopItemService {
     Connection connection;
 
@@ -14,12 +18,12 @@ public class EshopItemService {
         return eshopItem;
     }
 
-    public EshopItemService() throws SQLException {
-        connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/eshopengeto",
-                "engetoEshopUser",
-                "abcd1234"
-        );
+    public EshopItemService(
+            @Value("${mysql.url}") String mysqlUrl,
+            @Value("${mysql.user}") String mysqlUser,
+            @Value("${mysql.password}") String mysqlPassword
+    ) throws SQLException {
+        connection = DriverManager.getConnection(mysqlUrl, mysqlUser, mysqlPassword);
     }
 
     public List<EshopItem> getAllEshopItems() throws SQLException {
