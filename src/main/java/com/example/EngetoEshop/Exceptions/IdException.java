@@ -1,4 +1,4 @@
-package com.example.EngetoEshop;
+package com.example.EngetoEshop.Exceptions;
 
 public class IdException extends Exception{
     public IdException(Long id){

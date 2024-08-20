@@ -1,5 +1,9 @@
-package com.example.EngetoEshop;
+package com.example.EngetoEshop.RestControlers;
 
+import com.example.EngetoEshop.ErrorResponse;
+import com.example.EngetoEshop.EshopItem;
+import com.example.EngetoEshop.EshopItemService;
+import com.example.EngetoEshop.Exceptions.IdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

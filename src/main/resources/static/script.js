@@ -1,3 +1,21 @@
+
+let apiUrl = '';
+
+function loadConfigAndInitialize() {
+    fetch('/api/config')
+        .then(response => response.json())
+        .then(config => {
+            const host = config.host;
+            const port = config.port;
+            apiUrl = `http://${host}:${port}/eshop`;
+            load();
+            console.log(`Host: ${host}, Port: ${port}`);
+        })
+        .catch(error => console.log('Error fetching config:', error));
+}
+
+
+
 function loadItem() {
 
         var requestOptions = {
@@ -7,7 +25,7 @@ function loadItem() {
 
         var id = document.getElementById("id").value;
 
-        fetch("http://localhost:8080/eshop/"+id, requestOptions)
+        fetch(apiUrl+"/"+id, requestOptions)
             .then(response => response.json())
             .then(result => {
                 console.log(result);
@@ -31,7 +49,7 @@ function loadItem() {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8080/eshop", requestOptions)
+            fetch(apiUrl, requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
@@ -90,6 +108,7 @@ function loadItem() {
                 })
                 .catch(error => console.log('error', error));
         }
+        loadConfigAndInitialize();
         load();
 
         function addValue(){
@@ -122,7 +141,7 @@ function loadItem() {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8080/eshop", requestOptions)
+            fetch(apiUrl, requestOptions)
                 .then(response => response.text())
                 .then(result => {console.log(result); load();})
                 .catch(error => console.log('error', error));
@@ -136,7 +155,7 @@ function loadItem() {
             var id=document.getElementById("deleteSpecificItemInput").value;
             console.log(id);
 
-            fetch("http://localhost:8080/eshop/"+id, requestOptions)
+            fetch(apiUrl+"/"+id, requestOptions)
                 .then(response => response.text())
                 .then(result => {console.log(result); load();})
                 .catch(error => console.log('error', error));
@@ -147,7 +166,7 @@ function loadItem() {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8080/eshop/deleteAllNotSaleItems", requestOptions)
+            fetch(apiUrl+"/"+"deleteAllNotSaleItems", requestOptions)
                 .then(response => response.text())
                 .then(result => {console.log(result); load();})
                 .catch(error => console.log('error', error));
@@ -167,7 +186,7 @@ function loadItem() {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8080/eshop/"+id, requestOptions)
+            fetch(apiUrl+"/"+id, requestOptions)
                 .then(response => response.text())
                 .then(result => {console.log(result); load();})
                 .catch(error => console.log('error', error));

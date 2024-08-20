@@ -14,23 +14,6 @@ public class EshopItem {
     public EshopItem() {
     }
 
-    public EshopItem(Integer partNo, String name, String description, Boolean isForSale, Double price) {
-        this.partNo = partNo;
-        this.name = name;
-        this.description = description;
-        this.isForSale = isForSale;
-        this.price = price;
-    }
-
-    public EshopItem(Long id, Integer partNo, String name, String description, Boolean isForSale, Double price) {
-        this.id = id;
-        this.partNo = partNo;
-        this.name = name;
-        this.description = description;
-        this.isForSale = isForSale;
-        this.price = price;
-    }
-
     public EshopItem(Long id, Integer partNo, String name, String description, Boolean isForSale, Double price, String fileInBase64) {
         this.id = id;
         this.partNo = partNo;
@@ -106,6 +89,7 @@ public class EshopItem {
                 ", description='" + description + '\'' +
                 ", isForSale=" + isForSale +
                 ", price=" + price +
+                ", fileInBase64='" + fileInBase64 + '\'' +
                 '}';
     }
 }

@@ -19,7 +19,7 @@ class EngetoEshopApplicationTests {
 		String description="vařečka do kuchyně TOP";
 		boolean isForSale=true;
 		double price=5788.788;
-		EshopItem eshopItem = new EshopItem(partNo,name,description,isForSale,price);
+		EshopItem eshopItem = new EshopItem(99999L,partNo,name,description,isForSale,price,"null");
 		System.out.println(eshopItem);
 		eshopItem.setId(eshopItemService.saveNewItem(eshopItem));
 		EshopItem eshopItemFromDb=eshopItemService.getItem(eshopItem.getId());
